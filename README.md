@@ -1,1 +1,1 @@
-Automatic PR merging. Where shall we go?
+# Automatic PR merging. Where shall we go?
