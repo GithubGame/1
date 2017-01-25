@@ -1,0 +1,23 @@
+{
+  "name": "multilingual-assimilation-exchange",
+  "version": "0.1.0",
+  "private": true,
+  "description": "See README.MD for full details",
+  "devDependencies": {
+    "react-scripts": "0.8.5"
+  },
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.1.1",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "author": "Zac Braddy and collaborators on https://githubgame.github.io/1",
+  "license": "MIT"
+}
