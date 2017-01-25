@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {emojify} from 'react-emojione';
 
 class ChatContent extends Component {
   render() {
@@ -6,7 +7,7 @@ class ChatContent extends Component {
       <div className="panel panel-default chat-content">
         <div className="panel-body">
           {this.props.messages.map((m, idx) => {
-            return <div key={idx}>[{m.timestamp.toLocaleDateString()} {m.timestamp.toLocaleTimeString()}][{m.user}]: {m.message}</div>
+            return <div key={idx}>[{m.timestamp.toLocaleDateString()} {m.timestamp.toLocaleTimeString()}][{m.user}]: {emojify(m.message)}</div>
           })}
         </div>
       </div>
