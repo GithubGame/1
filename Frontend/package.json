@@ -10,7 +10,8 @@
     "bootstrap": "^3.3.7",
     "jquery": "^3.1.1",
     "react": "^15.4.2",
-    "react-dom": "^15.4.2"
+    "react-dom": "^15.4.2",
+    "react-emojione": "^2.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
