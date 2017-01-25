@@ -1,5 +1,5 @@
 #root {
-  height: 100%;
+  height: 94%;
 }
 
 .content {
@@ -49,3 +49,6 @@
   display: flex;
 }
 
+.panel{
+  overflow: hidden;
+}
