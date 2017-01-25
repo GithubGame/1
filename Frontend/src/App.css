@@ -1,0 +1,51 @@
+#root {
+  height: 100%;
+}
+
+.content {
+  height: 100%;
+  margin: 2em;
+  padding: 15px;
+}
+
+.content-body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.chat-input-row {
+  margin: 0 0 0 -15px;
+}
+
+.interface-row {
+  flex-grow: 9;
+  display: flex;
+}
+
+.chat-content-row {
+  flex-grow: 9;
+  display: flex;
+}
+
+.chat-content {
+  width: 100%;
+  flex-grow: 1;
+  padding-right: 0;
+}
+
+.interface-user-display {
+  display: flex;
+  flex-direction: column;
+}
+
+.your-talking-to-display {
+  flex-grow: 1;
+  display: flex;
+}
+
+.you-display {
+  flex-grow: 1;
+  display: flex;
+}
+
