@@ -23,19 +23,20 @@ class ChatInput extends Component {
   }
 
   makeServerCall(cb) {
-    var callConfiguration = { message: this.state.chatValue };
     
-    callConfiguration.method = 'POST';
-
+    let callConfiguration = { 
+      method:'POST',
+      message:this.state.chatValue
+     };
 
     return (
-      fetch('//localhost:5000/', callConfiguration)
+      fetch('//localhost:5000/api/Message', callConfiguration)
         .then(response => {
           if (response.status >= 400) {
             this.setState({
-              chatValue: 'No bro\'s available bro',
+              chatValue: 'No Endpoint Found',
             });
-            throw new Error('No bro\'s available bro');
+            throw new Error('No Endpoint Found');
           }
 
           return response.text();
@@ -43,7 +44,7 @@ class ChatInput extends Component {
         .then(cb)
         .catch(() => {
           this.setState({
-            chatValue: 'No bro\'s available bro'
+            chatValue: 'Some Error Occurred'
           })
         })
     );
