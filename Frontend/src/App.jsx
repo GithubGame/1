@@ -13,7 +13,7 @@ class App extends Component {
     this.state = {
       messages: [
         {user:'Marco', message: 'Hola', timestamp: new Date()},
-        {user:'Marco', message: 'Whoops! I mean, hello!', timestamp: new Date()},
+        {user:'Marco', message: 'Whoops! I mean, hello! :smiley:', timestamp: new Date()},
         {user:'Marco', message: 'My name is Marco and I am learning to speak english.', timestamp: new Date()},
         {user:'Marco', message: 'I notice you\'re trying to learn spanish, why don\'t you say hello in spanish?', timestamp: new Date()},
         {user:'Marco', message: 'Hint, I\'ve already said it once by accident', timestamp: new Date()},
