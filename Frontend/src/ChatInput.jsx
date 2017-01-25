@@ -1,4 +1,7 @@
+require('es6-promise').polyfill();
+
 import React, { Component } from 'react';
+import fetch from 'isomorphic-fetch';
 
 class ChatInput extends Component {
   constructor(props) {
@@ -19,8 +22,38 @@ class ChatInput extends Component {
     });
   }
 
+  makeServerCall(cb) {
+    var callConfiguration = { message: this.state.chatValue };
+    
+    callConfiguration.method = 'POST';
+
+
+    return (
+      fetch('//localhost:5000/', callConfiguration)
+        .then(response => {
+          if (response.status >= 400) {
+            this.setState({
+              chatValue: 'No bro\'s available bro',
+            });
+            throw new Error('No bro\'s available bro');
+          }
+
+          return response.text();
+        })
+        .then(cb)
+        .catch(() => {
+          this.setState({
+            chatValue: 'No bro\'s available bro'
+          })
+        })
+    );
+  }
+
   handleSubmitChat() {
-    this.props.addMessage(this.state.chatValue, 'You', new Date())
+
+    this.makeServerCall(message => {
+      this.props.addMessage(this.state.chatValue, 'You', new Date())
+    });
 
     this.setState({
       chatValue: ''
@@ -36,7 +69,7 @@ class ChatInput extends Component {
   render() {
     return (
       <div className="input-group">
-        <input type="text" className="form-control" aria-label="Chat input box" value={this.state.chatValue} onChange={this.handleChatValueChange} onKeyPress={this.handleKeyPress}/>
+        <input type="text" className="form-control" aria-label="Chat input box" value={this.state.chatValue} onChange={this.handleChatValueChange} onKeyPress={this.handleKeyPress} />
         <div className="input-group-btn">
           <button type="button" className="btn btn-success" onClick={this.handleSubmitChat}><i className="glyphicon glyphicon-comment" /></button>
         </div>
