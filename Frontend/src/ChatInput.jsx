@@ -24,52 +24,34 @@ class ChatInput extends Component {
 
   makeServerCall(cb) {
     var content = this.state.chatValue;
-    
+    var myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
     let callConfiguration = {
       method: 'POST',
-      
-      mode: 'cors',
-      body: content
+      headers: myHeaders,
+      body: JSON.stringify(content)
     };
 
-    var data = {
-      FirstName: 'Andrew',
-      LastName: 'Lock',
-      Age: 31
-  }
-    $.ajax({
-      type: "POST",
-      url: "http://localhost:5000/api/Message",
-      data: JSON.stringify(content),
-      success: function(value){
-        alert('yeah :'+value);
-      },
-      error: function(){
-        alert('boo');
-      },
-      dataType: 'json',
-      contentType: 'application/json'
-    });
-    // return (
-    //   fetch(request)
-    //     .then(response => {
-    //       console.log(response);
-    //       if (response.status >= 400) {
-    //         this.setState({
-    //           chatValue: 'No Endpoint Found',
-    //         });
-    //         throw new Error('No Endpoint Found');
-    //       }
+    return (
+      fetch("//localhost:5000/api/Message", callConfiguration)
+        .then(response => {
+          console.log(response);
+          if (response.status >= 400) {
+            this.setState({
+              chatValue: 'No Endpoint Found',
+            });
+            throw new Error('No Endpoint Found');
+          }
 
-    //       return response.text();
-    //     })
-    //     .then(cb)
-    //     .catch(() => {
-    //       this.setState({
-    //         chatValue: 'Some Error Occurred'
-    //       })
-    //     })
-    // );
+          return response.text();
+        })
+        .then(cb)
+        .catch(() => {
+          this.setState({
+            chatValue: 'Some Error Occurred'
+          })
+        })
+    );
   }
 
   handleSubmitChat() {
