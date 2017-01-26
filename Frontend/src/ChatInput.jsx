@@ -31,12 +31,18 @@ class ChatInput extends Component {
       mode: 'cors',
       body: content
     };
+
+    var data = {
+      FirstName: 'Andrew',
+      LastName: 'Lock',
+      Age: 31
+  }
     $.ajax({
       type: "POST",
       url: "http://localhost:5000/api/Message",
-      data: JSON.stringify({message: content}),
-      success: function(){
-        alert('yeah');
+      data: JSON.stringify(content),
+      success: function(value){
+        alert('yeah :'+value);
       },
       error: function(){
         alert('boo');

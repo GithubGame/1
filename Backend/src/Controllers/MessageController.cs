@@ -1,8 +1,10 @@
-
+using System;
 using System.Collections.Generic;
-using Microsoft.AspNet.Mvc;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
-namespace MaxBackend.Controllers
+namespace Backend2.Controllers
 {
     public class SimpleQueue
     {
@@ -37,12 +39,11 @@ namespace MaxBackend.Controllers
     [Route("api/[controller]")]
     public class MessageController : Controller
     {
-
-        // GET: api/values
+        // GET api/values
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            List<string> queued = new List<string>();
+             List<string> queued = new List<string>();
             var queue = SimpleQueue.Instance();
             while (!queue.IsEmpty)
             {
@@ -57,15 +58,10 @@ namespace MaxBackend.Controllers
         {
             return "value";
         }
-        public class Person  
-        {
-            public string FirstName { get; set; }
-            public string LastName { get; set; }
-            public int Age { get; set; }
-        }
+
         // POST api/values
         [HttpPost]
-        public string Post([FromBody]dynamic message)
+        public string Post([FromBody]string message)
         {
             SimpleQueue.Instance().Enqueue(message);
             return message;
