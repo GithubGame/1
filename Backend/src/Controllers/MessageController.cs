@@ -1,18 +1,18 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Backend2.ViewModels;
 
 namespace Backend2.Controllers
 {
+
+    // queue to be substituted with an actual queue like azure storage queue
     public class SimpleQueue
     {
         private static SimpleQueue instance;
-        private Queue<string> Queue;
+        private Queue<MessageData> _queue;
         private SimpleQueue()
         {
-            Queue = new Queue<string>();
+            _queue = new Queue<MessageData>();
         }
         public static SimpleQueue Instance()
         {
@@ -23,17 +23,17 @@ namespace Backend2.Controllers
             return instance;
         }
 
-        public void Enqueue(string value)
+        public void Enqueue(MessageData value)
         {
-            Queue.Enqueue(value);
+            _queue.Enqueue(value);
         }
-        public string Dequeue()
+        public MessageData Dequeue()
         {
-            return Queue.Dequeue();
+            return _queue.Dequeue();
         }
         public bool IsEmpty
         {
-            get { return Queue.Count == 0; }
+            get { return _queue.Count == 0; }
         }
     }
     [Route("api/[controller]")]
@@ -41,9 +41,9 @@ namespace Backend2.Controllers
     {
         // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<MessageData> Get()
         {
-             List<string> queued = new List<string>();
+            var queued = new List<MessageData>();
             var queue = SimpleQueue.Instance();
             while (!queue.IsEmpty)
             {
@@ -59,12 +59,12 @@ namespace Backend2.Controllers
             return "value";
         }
 
+        
         // POST api/values
         [HttpPost]
-        public string Post([FromBody]string message)
+        public void Post([FromBody]MessageData data)
         {
-            SimpleQueue.Instance().Enqueue(message);
-            return message;
+            SimpleQueue.Instance().Enqueue(data);
         }
 
         // PUT api/values/5

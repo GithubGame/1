@@ -25,11 +25,16 @@ class ChatInput extends Component {
   makeServerCall(cb) {
     var content = this.state.chatValue;
     var myHeaders = new Headers();
+    let data = {
+      message: content,
+      user: 'You',
+      time: Date.now()
+    }
     myHeaders.append('Content-Type', 'application/json');
     let callConfiguration = {
       method: 'POST',
       headers: myHeaders,
-      body: JSON.stringify(content)
+      body: JSON.stringify(data)
     };
 
     return (
@@ -56,9 +61,7 @@ class ChatInput extends Component {
 
   handleSubmitChat() {
 
-    this.makeServerCall(message => {
-      this.props.addMessage(this.state.chatValue, 'You', new Date())
-    });
+    this.makeServerCall(message => { });
 
     this.setState({
       chatValue: ''
