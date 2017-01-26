@@ -1,7 +1,6 @@
 require('es6-promise').polyfill();
 
 import React, { Component } from 'react';
-import $ from 'jquery';
 
 class ChatInput extends Component {
   constructor(props) {
