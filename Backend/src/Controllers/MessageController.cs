@@ -1,19 +1,54 @@
-using System;
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 
 namespace MaxBackend.Controllers
 {
+    public class SimpleQueue
+    {
+        private static SimpleQueue instance;
+        private Queue<string> Queue;
+        private SimpleQueue()
+        {
+            Queue = new Queue<string>();
+        }
+        public static SimpleQueue Instance()
+        {
+
+            if (instance == null)
+                instance = new SimpleQueue();
+
+            return instance;
+        }
+
+        public void Enqueue(string value)
+        {
+            Queue.Enqueue(value);
+        }
+        public string Dequeue()
+        {
+            return Queue.Dequeue();
+        }
+        public bool IsEmpty
+        {
+            get { return Queue.Count == 0; }
+        }
+    }
     [Route("api/[controller]")]
     public class MessageController : Controller
     {
+
         // GET: api/values
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            return new string[] { "value1", "value2" };
+            List<string> queued = new List<string>();
+            var queue = SimpleQueue.Instance();
+            while (!queue.IsEmpty)
+            {
+                queued.Add(queue.Dequeue());
+            }
+            return queued;
         }
 
         // GET api/values/5
@@ -22,12 +57,18 @@ namespace MaxBackend.Controllers
         {
             return "value";
         }
-
+        public class Person  
+        {
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public int Age { get; set; }
+        }
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string message)
+        public string Post([FromBody]dynamic message)
         {
-
+            SimpleQueue.Instance().Enqueue(message);
+            return message;
         }
 
         // PUT api/values/5

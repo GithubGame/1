@@ -1,7 +1,7 @@
 require('es6-promise').polyfill();
 
 import React, { Component } from 'react';
-import fetch from 'isomorphic-fetch';
+import $ from 'jquery';
 
 class ChatInput extends Component {
   constructor(props) {
@@ -23,31 +23,47 @@ class ChatInput extends Component {
   }
 
   makeServerCall(cb) {
+    var content = this.state.chatValue;
     
-    let callConfiguration = { 
-      method:'POST',
-      message:this.state.chatValue
-     };
+    let callConfiguration = {
+      method: 'POST',
+      
+      mode: 'cors',
+      body: content
+    };
+    $.ajax({
+      type: "POST",
+      url: "http://localhost:5000/api/Message",
+      data: JSON.stringify({message: content}),
+      success: function(){
+        alert('yeah');
+      },
+      error: function(){
+        alert('boo');
+      },
+      dataType: 'json',
+      contentType: 'application/json'
+    });
+    // return (
+    //   fetch(request)
+    //     .then(response => {
+    //       console.log(response);
+    //       if (response.status >= 400) {
+    //         this.setState({
+    //           chatValue: 'No Endpoint Found',
+    //         });
+    //         throw new Error('No Endpoint Found');
+    //       }
 
-    return (
-      fetch('//localhost:5000/api/Message', callConfiguration)
-        .then(response => {
-          if (response.status >= 400) {
-            this.setState({
-              chatValue: 'No Endpoint Found',
-            });
-            throw new Error('No Endpoint Found');
-          }
-
-          return response.text();
-        })
-        .then(cb)
-        .catch(() => {
-          this.setState({
-            chatValue: 'Some Error Occurred'
-          })
-        })
-    );
+    //       return response.text();
+    //     })
+    //     .then(cb)
+    //     .catch(() => {
+    //       this.setState({
+    //         chatValue: 'Some Error Occurred'
+    //       })
+    //     })
+    // );
   }
 
   handleSubmitChat() {
