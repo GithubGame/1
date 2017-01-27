@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Backend2.ViewModels;
+using System.Linq;
 
 namespace Backend2.Controllers
 {
@@ -9,10 +10,10 @@ namespace Backend2.Controllers
     public class SimpleQueue
     {
         private static SimpleQueue instance;
-        private Queue<MessageData> _queue;
+        private Dictionary<int, MessageData> _queue;
         private SimpleQueue()
         {
-            _queue = new Queue<MessageData>();
+            _queue = new Dictionary<int, MessageData>();
         }
         public static SimpleQueue Instance()
         {
@@ -23,13 +24,17 @@ namespace Backend2.Controllers
             return instance;
         }
 
-        public void Enqueue(MessageData value)
+        public void Enqueue(MessageData val)
         {
-            _queue.Enqueue(value);
+            var id = _queue.Count;
+            val.Id = id;
+            _queue.Add(id, val);
         }
-        public MessageData Dequeue()
+        public IDictionary<int, MessageData> GetEveryMessageAfter(int key)
         {
-            return _queue.Dequeue();
+            if (!_queue.ContainsKey(key))
+                return new Dictionary<int, MessageData>();
+            return _queue.Where(x => x.Key > key).ToDictionary(p => p.Key, p => p.Value);
         }
         public bool IsEmpty
         {
@@ -43,23 +48,19 @@ namespace Backend2.Controllers
         [HttpGet]
         public IEnumerable<MessageData> Get()
         {
-            var queued = new List<MessageData>();
             var queue = SimpleQueue.Instance();
-            while (!queue.IsEmpty)
-            {
-                queued.Add(queue.Dequeue());
-            }
-            return queued;
+            return queue.GetEveryMessageAfter(0).Select(x => x.Value);
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IEnumerable<MessageData> Get(int id)
         {
-            return "value";
+            var queue = SimpleQueue.Instance();
+            return queue.GetEveryMessageAfter(id).Select(x => x.Value);
         }
 
-        
+
         // POST api/values
         [HttpPost]
         public void Post([FromBody]MessageData data)
