@@ -49,19 +49,20 @@ class ChatContent extends Component {
 
         console.log(element)
 
-        this.props.addMessage(element.message, element.user, element.time) 
+        this.props.addMessage(element.message, element.user, new Date(element.time)) 
       }
       );
       console.log(input);
       
     })
-    window.setInterval(this.pollme, 10000)
+    window.setInterval(this.pollme, 20000)
   }
   render() {
     return (
       <div className="panel panel-default chat-content">
         <div className="panel-body">
           {this.props.messages.map((m, idx) => {
+            console.log(m);
             return <div key={idx}>[{m.timestamp.toLocaleDateString()} {m.timestamp.toLocaleTimeString()}][{m.user}]: {emojify(m.message)}</div>
           })}
         </div>
