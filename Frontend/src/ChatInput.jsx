@@ -1,3 +1,5 @@
+require('es6-promise').polyfill();
+
 import React, { Component } from 'react';
 
 class ChatInput extends Component {
@@ -19,8 +21,46 @@ class ChatInput extends Component {
     });
   }
 
+  makeServerCall(cb) {
+    var content = this.state.chatValue;
+    var myHeaders = new Headers();
+    let data = {
+      message: content,
+      user: 'You',
+      time: Date.now()
+    }
+    myHeaders.append('Content-Type', 'application/json');
+    let callConfiguration = {
+      method: 'POST',
+      headers: myHeaders,
+      body: JSON.stringify(data)
+    };
+
+    return (
+      fetch("//localhost:5000/api/Message", callConfiguration)
+        .then(response => {
+          console.log(response);
+          if (response.status >= 400) {
+            this.setState({
+              chatValue: 'No Endpoint Found',
+            });
+            throw new Error('No Endpoint Found');
+          }
+
+          return response.text();
+        })
+        .then(cb)
+        .catch(() => {
+          this.setState({
+            chatValue: 'Some Error Occurred'
+          })
+        })
+    );
+  }
+
   handleSubmitChat() {
-    this.props.addMessage(this.state.chatValue, 'You', new Date())
+
+    this.makeServerCall(message => { });
 
     this.setState({
       chatValue: ''
@@ -36,7 +76,7 @@ class ChatInput extends Component {
   render() {
     return (
       <div className="input-group">
-        <input type="text" className="form-control" aria-label="Chat input box" value={this.state.chatValue} onChange={this.handleChatValueChange} onKeyPress={this.handleKeyPress}/>
+        <input type="text" className="form-control" aria-label="Chat input box" value={this.state.chatValue} onChange={this.handleChatValueChange} onKeyPress={this.handleKeyPress} />
         <div className="input-group-btn">
           <button type="button" className="btn btn-success" onClick={this.handleSubmitChat}><i className="glyphicon glyphicon-comment" /></button>
         </div>
