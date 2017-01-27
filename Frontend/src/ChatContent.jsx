@@ -55,7 +55,7 @@ class ChatContent extends Component {
       console.log(input);
       
     })
-    window.setInterval(this.pollme, 1000)
+    window.setInterval(this.pollme, 10000)
   }
   render() {
     return (
