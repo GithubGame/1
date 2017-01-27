@@ -82,11 +82,11 @@ class App extends Component {
               </div>
             </div>
             <div className="col-lg-2 chat-content-row">
-              <ChatContent addMessage={this.addMessage} messages={this.state.messages} />
+              <ChatContent addMessage={this.addMessage} messages={this.state.messages}/>
             </div>
           </div>
           <div className="row chat-input-row">
-            <ChatInput addMessage={this.addMessage}/>
+            <ChatInput addMessage={this.addMessage} />
           </div>
         </div>
       </div>

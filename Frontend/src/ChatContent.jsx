@@ -7,6 +7,9 @@ class ChatContent extends Component {
 
     this.callme = this.callme.bind(this);
     this.pollme = this.pollme.bind(this);
+    this.state = {
+      lastMessageId: 0
+    };
   }
   componentDidMount() {
     window.setInterval(this.pollme, 20000)
@@ -22,7 +25,7 @@ class ChatContent extends Component {
     };
 
     return (
-      fetch("//localhost:5000/api/Message", callConfiguration)
+      fetch("//localhost:5000/api/Message/" + this.state.lastMessageId, callConfiguration)
         .then(response => {
 
           if (response.status >= 400) {
@@ -36,20 +39,20 @@ class ChatContent extends Component {
         })
         .then(cb)
         .catch(() => {
-          this.setState({
-            chatValue: 'Some Error Occurred'
-          })
+          
         })
     );
   }
   pollme() {
     this.callme(message => {
       var input = JSON.parse(message);
-      input.forEach(element => {
-
-        console.log(element)
-
-        this.props.addMessage(element.message, element.user, new Date(element.time))
+      input.forEach(element=>{
+        console.log(element);
+        this.setState({
+            lastMessageId: element.id
+          })
+        
+        this.props.addMessage(element.message, element.user, new Date(element.time)) 
       }
       );
       console.log(input);
