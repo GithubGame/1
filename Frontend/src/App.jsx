@@ -83,6 +83,12 @@ class App extends Component {
     }
   }
 
+  handleUsernameChange(ev) {
+    this.setState({
+      username: ev.target.value,
+    });
+  }
+
   render() {
     if (this.state.loggedIn) {
       return (
@@ -118,7 +124,7 @@ class App extends Component {
                   </div>
           <div className="panel-body content-body">
             <div className="input-group">
-              <input type="text" className="form-control" aria-label="login input box" onKeyPress={this.handleKeyPress} />
+              <input type="text" className="form-control" aria-label="login input box" onChange={this.handleUsernameChange} onKeyPress={this.handleKeyPress} />
               <div className="input-group-btn">
                 <button type="button" className="btn btn-success" onClick={this.handleLogin}><i className="glyphicon glyphicon-comment" /></button>
               </div>
