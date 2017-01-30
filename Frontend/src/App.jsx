@@ -4,6 +4,7 @@ import ChatContent from './ChatContent';
 import RemoteUserDisplay from './RemoteUserDisplay';
 import LocalUserDisplay from './LocalUserDisplay';
 import Header from './Header';
+import '../node_modules/bootstrap/dist/boostrap.css';
 import './App.css';
 
 class App extends Component {
