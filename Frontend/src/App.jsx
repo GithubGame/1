@@ -4,7 +4,7 @@ import ChatContent from './ChatContent';
 import RemoteUserDisplay from './RemoteUserDisplay';
 import LocalUserDisplay from './LocalUserDisplay';
 import Header from './Header';
-import '../node_modules/bootstrap/dist/boostrap.css';
+import '../node_modules/bootstrap/dist/css/bootstrap.css';
 import './App.css';
 
 class App extends Component {
@@ -12,12 +12,14 @@ class App extends Component {
     super(props);
 
     this.state = {
+      loggedIn: false,
+      username: '',
       messages: [
-        {user:'Marco', message: 'Hola', timestamp: new Date()},
-        {user:'Marco', message: 'Whoops! I mean, hello! :smiley:', timestamp: new Date()},
-        {user:'Marco', message: 'My name is Marco and I am learning to speak english.', timestamp: new Date()},
-        {user:'Marco', message: 'I notice you\'re trying to learn spanish, why don\'t you say hello in spanish?', timestamp: new Date()},
-        {user:'Marco', message: 'Hint, I\'ve already said it once by accident', timestamp: new Date()},
+        { user: 'Marco', message: 'Hola', timestamp: new Date() },
+        { user: 'Marco', message: 'Whoops! I mean, hello! :smiley:', timestamp: new Date() },
+        { user: 'Marco', message: 'My name is Marco and I am learning to speak english.', timestamp: new Date() },
+        { user: 'Marco', message: 'I notice you\'re trying to learn spanish, why don\'t you say hello in spanish?', timestamp: new Date() },
+        { user: 'Marco', message: 'Hint, I\'ve already said it once by accident', timestamp: new Date() },
       ],
       usersConnected: {
         client: {
@@ -34,6 +36,9 @@ class App extends Component {
     };
 
     this.addMessage = this.addMessage.bind(this);
+
+    this.handleLogin = this.handleLogin.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
   addMessage(message, user, timestamp) {
@@ -66,32 +71,62 @@ class App extends Component {
     )
   }
 
+  handleLogin() {
+    this.setState({
+      loggedIn: true
+    })
+  }
+
+  handleKeyPress(ev) {
+    if (ev.key === 'Enter') {
+      this.handleLogin();
+    }
+  }
+
   render() {
-    return (
-      <div className="panel panel-default content">
-        <div className="panel-body content-body">
-          <div className="row">
-            <Header />
-          </div>
-          <div className="row interface-row">
-            <div className="col-lg-2 interface-user-display">
-              <div className="row your-talking-to-display">
-                <RemoteUserDisplay userInfo={this.state.usersConnected.remote} />
+    if (this.state.loggedIn) {
+      return (
+        <div className="panel panel-default content">
+          <div className="panel-body content-body">
+            <div className="row">
+              <Header />
+            </div>
+            <div className="row interface-row">
+              <div className="col-lg-2 interface-user-display">
+                <div className="row your-talking-to-display">
+                  <RemoteUserDisplay userInfo={this.state.usersConnected.remote} />
+                </div>
+                <div className="row you-display">
+                  <LocalUserDisplay userInfo={this.state.usersConnected.client} />
+                </div>
               </div>
-              <div className="row you-display">
-                <LocalUserDisplay userInfo={this.state.usersConnected.client} />
+              <div className="col-lg-2 chat-content-row">
+                <ChatContent addMessage={this.addMessage} messages={this.state.messages} />
               </div>
             </div>
-            <div className="col-lg-2 chat-content-row">
-              <ChatContent addMessage={this.addMessage} messages={this.state.messages}/>
+            <div className="row chat-input-row">
+              <ChatInput addMessage={this.addMessage} />
             </div>
-          </div>
-          <div className="row chat-input-row">
-            <ChatInput addMessage={this.addMessage} />
           </div>
         </div>
-      </div>
-    );
+      );
+    } else {
+      return (
+        <div className="panel panel-default content">
+          <div className="panel-header">
+            Please log in
+                  </div>
+          <div className="panel-body content-body">
+            <div className="input-group">
+              <input type="text" className="form-control" aria-label="login input box" onKeyPress={this.handleKeyPress} />
+              <div className="input-group-btn">
+                <button type="button" className="btn btn-success" onClick={this.handleLogin}><i className="glyphicon glyphicon-comment" /></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
   }
 }
 
