@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ChatInput from './ChatInput';
 import ChatContent from './ChatContent';
+import LoginInput from './LoginInput';
 import RemoteUserDisplay from './RemoteUserDisplay';
 import LocalUserDisplay from './LocalUserDisplay';
 import Header from './Header';
@@ -36,11 +37,14 @@ class App extends Component {
     };
 
     this.addMessage = this.addMessage.bind(this);
-
-    this.handleLogin = this.handleLogin.bind(this);
-    this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.setLogedIn = this.setLogedIn.bind(this);
   }
-
+  setLogedIn(user) {
+    this.setState({
+      loggedIn: true
+    });
+    console.log(user);
+  }
   addMessage(message, user, timestamp) {
     const messages = this.state.messages;
 
@@ -69,24 +73,6 @@ class App extends Component {
         messages
       }
     )
-  }
-
-  handleLogin() {
-    this.setState({
-      loggedIn: true
-    })
-  }
-
-  handleKeyPress(ev) {
-    if (ev.key === 'Enter') {
-      this.handleLogin();
-    }
-  }
-
-  handleUsernameChange(ev) {
-    this.setState({
-      username: ev.target.value,
-    });
   }
 
   render() {
@@ -118,19 +104,7 @@ class App extends Component {
       );
     } else {
       return (
-        <div className="panel panel-default content">
-          <div className="panel-header">
-            Please log in
-                  </div>
-          <div className="panel-body content-body">
-            <div className="input-group">
-              <input type="text" className="form-control" aria-label="login input box" onChange={this.handleUsernameChange} onKeyPress={this.handleKeyPress} />
-              <div className="input-group-btn">
-                <button type="button" className="btn btn-success" onClick={this.handleLogin}><i className="glyphicon glyphicon-comment" /></button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <LoginInput setLogedIn={this.setLogedIn} />
       );
     }
   }
