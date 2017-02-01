@@ -26,7 +26,7 @@ class ChatInput extends Component {
     var myHeaders = new Headers();
     let data = {
       message: content,
-      user: 'You',
+      user: this.props.client,
       time: Date.now()
     }
     myHeaders.append('Content-Type', 'application/json');

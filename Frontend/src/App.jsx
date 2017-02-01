@@ -40,9 +40,17 @@ class App extends Component {
     this.setLogedIn = this.setLogedIn.bind(this);
   }
   setLogedIn(user) {
+    const usersConnected = this.state.usersConnected;
+
+    usersConnected.client.userName = user;
+
     this.setState({
-      loggedIn: true
+      loggedIn: true,
     });
+    this.setState({
+      usersConnected
+    });
+
     console.log(user);
   }
   addMessage(message, user, timestamp) {
@@ -97,7 +105,7 @@ class App extends Component {
               </div>
             </div>
             <div className="row chat-input-row">
-              <ChatInput addMessage={this.addMessage} />
+              <ChatInput addMessage={this.addMessage} client={this.state.usersConnected.client.userName}/>
             </div>
           </div>
         </div>
