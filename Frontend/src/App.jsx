@@ -15,13 +15,7 @@ class App extends Component {
     this.state = {
       loggedIn: false,
       username: '',
-      messages: [
-        { user: 'Marco', message: 'Hola', timestamp: new Date() },
-        { user: 'Marco', message: 'Whoops! I mean, hello! :smiley:', timestamp: new Date() },
-        { user: 'Marco', message: 'My name is Marco and I am learning to speak english.', timestamp: new Date() },
-        { user: 'Marco', message: 'I notice you\'re trying to learn spanish, why don\'t you say hello in spanish?', timestamp: new Date() },
-        { user: 'Marco', message: 'Hint, I\'ve already said it once by accident', timestamp: new Date() },
-      ],
+      messages: [ ],
       usersConnected: {
         client: {
           userName: 'Zac Braddy',
@@ -61,20 +55,6 @@ class App extends Component {
       message,
       timestamp
     });
-
-    if (message.toLowerCase().indexOf('hola') > -1) {
-      messages.push({
-        user: 'Marco',
-        message: 'YES! Well done, think of all the fun we\'re going to have learning a language together!',
-        timestamp: new Date()
-      });
-    } else {
-      messages.push({
-        user: 'Marco',
-        message: 'Close but no cigar, try "Hola"',
-        timestamp: new Date()
-      });
-    }
 
     this.setState(
       {
