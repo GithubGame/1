@@ -12,7 +12,7 @@ class ChatContent extends Component {
     };
   }
   componentDidMount() {
-    window.setInterval(this.pollme, 20000)
+    window.setInterval(this.pollme, 1000)
   }
 
   callme(cb) {
