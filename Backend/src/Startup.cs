@@ -1,3 +1,6 @@
+using Backend2.Features;
+using Backend2.ViewModels;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +29,9 @@ namespace Backend2
             // Add framework services.
             services.AddCors();
             services.AddMvc();
+            services.AddMediatR();
+
+            services.AddSingleton<IQueue<MessageData>,SimpleQueue>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

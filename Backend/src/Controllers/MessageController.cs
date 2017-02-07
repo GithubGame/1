@@ -1,71 +1,39 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Backend2.ViewModels;
-using System.Linq;
+using MediatR;
+using System.Threading.Tasks;
+using Backend2.Features;
 
 namespace Backend2.Controllers
 {
-
-    // queue to be substituted with an actual queue like azure storage queue
-    public class SimpleQueue
-    {
-        private static SimpleQueue instance;
-        private Dictionary<int, MessageData> _queue;
-        private SimpleQueue()
-        {
-            _queue = new Dictionary<int, MessageData>();
-        }
-        public static SimpleQueue Instance()
-        {
-
-            if (instance == null)
-                instance = new SimpleQueue();
-
-            return instance;
-        }
-
-        public void Enqueue(MessageData val)
-        {
-            var id = _queue.Count;
-            val.Id = id;
-            _queue.Add(id, val);
-        }
-        public IDictionary<int, MessageData> GetEveryMessageAfter(int key)
-        {
-            if (!_queue.ContainsKey(key))
-                return new Dictionary<int, MessageData>();
-            return _queue.Where(x => x.Key > key).ToDictionary(p => p.Key, p => p.Value);
-        }
-        public bool IsEmpty
-        {
-            get { return _queue.Count == 0; }
-        }
-    }
     [Route("api/[controller]")]
     public class MessageController : Controller
     {
+        private IMediator mediator;
+        public MessageController(IMediator mediator)
+        {
+            this.mediator = mediator;
+        }
         // GET api/values
         [HttpGet]
-        public IEnumerable<MessageData> Get()
+        public async Task<IEnumerable<MessageData>> Get()
         {
-            var queue = SimpleQueue.Instance();
-            return queue.GetEveryMessageAfter(0).Select(x => x.Value);
+            return await mediator.Send(new GetMessages());
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public IEnumerable<MessageData> Get(int id)
+        public async Task<IEnumerable<MessageData>> Get(int id)
         {
-            var queue = SimpleQueue.Instance();
-            return queue.GetEveryMessageAfter(id).Select(x => x.Value);
+            return await mediator.Send(new GetMessages(id));
         }
-
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]MessageData data)
+        public async Task Post([FromBody]MessageData data)
         {
-            SimpleQueue.Instance().Enqueue(data);
+            await mediator.Send(new QueueMessage(data));
         }
 
         // PUT api/values/5
