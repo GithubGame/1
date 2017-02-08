@@ -11,20 +11,12 @@ namespace Backend2.Features
     }
     public class SimpleQueue: IQueue<MessageData>
     {
-        // private static SimpleQueue instance;
         private Dictionary<int, MessageData> _queue;
         public SimpleQueue()
         {
             _queue = new Dictionary<int, MessageData>();
         }
-        // public static SimpleQueue Instance()
-        // {
 
-        //     if (instance == null)
-        //         instance = new SimpleQueue();
-
-        //     return instance;
-        // }
 
         public void Enqueue(MessageData val)
         {
