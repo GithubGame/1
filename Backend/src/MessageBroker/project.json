@@ -1,4 +1,5 @@
 {
+    "version": "1.0.0-*",
     "dependencies": {
         "Microsoft.NETCore.App": {
             "version": "1.0.0",
@@ -60,4 +61,5 @@
     "tooling": {
         "defaultNamespace": "Backend2"
     }
+
 }
