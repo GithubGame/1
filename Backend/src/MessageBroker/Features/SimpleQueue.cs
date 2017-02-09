@@ -23,16 +23,10 @@ namespace Backend2.Features
             var id = _queue.Count;
             val.Id = id;
             _queue.Add(id, val);
-            System.Console.WriteLine("Add");
-            System.Console.WriteLine(_queue.Count);
         }
         public IDictionary<int, MessageData> GetEveryMessageAfter(int key)
         {
-            System.Console.WriteLine("Get "+key);
-            System.Console.WriteLine(_queue.Count);
-            if (!_queue.ContainsKey(key))
-                return new Dictionary<int, MessageData>();
-            return _queue.Where(x => x.Key > key).ToDictionary(p => p.Key, p => p.Value);
+            return _queue.Where(x => x.Key >= key).ToDictionary(p => p.Key, p => p.Value);
         }
         public bool IsEmpty
         {
