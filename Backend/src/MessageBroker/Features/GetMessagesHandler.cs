@@ -10,19 +10,18 @@ namespace Backend2.Features
     {
         IQueue<MessageData> _queue;
         public GetMessagesHandler(IQueue<MessageData> queue){
-            System.Console.WriteLine("new GetMEssages");
-            
             this._queue = queue;
         }
         public IEnumerable<MessageData> Handle(GetMessages message)
         {
-            System.Console.WriteLine("call to handlers");
-            
             if(_queue == null){
-                System.Console.WriteLine("Queue null");
                 return new List<MessageData>();
             }
-            return _queue.GetEveryMessageAfter(message.Id).Select(x => x.Value);
+            var result = _queue.GetEveryMessageAfter(message.Id);
+            if(result == null){
+                return new List<MessageData>();
+            }
+            return result.Select(x => x.Value);
         }
     }
 }

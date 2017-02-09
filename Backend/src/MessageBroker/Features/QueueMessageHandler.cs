@@ -12,6 +12,8 @@ namespace Backend2.Features
         }
         public void Handle(QueueMessage message)
         {
+            if(_queue == null || message == null || message.data == null)
+                return;
             _queue.Enqueue(message.data);
         }
     }
